@@ -31,4 +31,13 @@
 #nav a.router-link-exact-active {
   color: #42b983;
 }
+.center {
+  margin-left: auto;
+  margin-right: auto;
+}
+body {
+  background-image: url("../src/assets/tree-4767679_1920.jpg");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
 </style>

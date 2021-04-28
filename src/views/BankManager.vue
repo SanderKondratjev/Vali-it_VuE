@@ -1,9 +1,26 @@
 <template>
   <div class="home">
+    <h1>Kontode nimekiri</h1>
+    <table class="center" border="1">
+      <tr>
+        <th>Nimi</th>
+        <th>Konto nr</th>
+        <th>Saldo</th>
+        <th>E-mail</th>
+        <th>Lukus?</th>
+      </tr>
+      <tr v-for="customers in accounts">
+        <td>{{ customers.name }}</td>
+        <td>{{ customers.accountNr }}</td>
+        <td>{{ customers.balance }}</td>
+        <td>{{ customers.email }}</td>
+        <td>{{ customers.locked }}</td>
+      </tr>
+    </table>
     <h2>Ava konto</h2>
-    <input v-model="accountNr1" placeholder="Sisesta uus konto number">
-    <input v-model="name1" placeholder="Sisesta ees- ja perekonnanimi">
-    <input v-model="email1" placeholder="Sisesta e-mail">
+    <input v-model="accountNr1" placeholder="Uus konto number">
+    <input v-model="name1" placeholder="Ees- ja perekonnanimi">
+    <input v-model="email1" placeholder="E-mail">
     <button v-on:click="createAcc()">Ava konto</button>
     <br>
     <br>{{avatud}}
@@ -54,7 +71,8 @@ export default {
       'accountNr4':'',
       'accountNr5':'',
       'balance4':'',
-      'kantud':''
+      'kantud':'',
+      accounts: []
     }
   },
   methods:{
@@ -102,7 +120,11 @@ export default {
                 " on võetud " + this.balance4 + " € ning kantud kontole " +
                 this.accountNr5
           });
-    }
+    },
+  },
+  mounted() {
+    this.$http.get("http://localhost:8080/banksql/8")
+        .then(response => this.accounts = response.data);
   }
 }
 </script>
