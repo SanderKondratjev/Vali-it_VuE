@@ -1,5 +1,15 @@
 <template>
   <div class="home">
+    <h1>Logi sisse</h1>
+    <input v-model="username" placeholder="Kasutajatunnus">
+    <input v-model="password" placeholder="Parool">
+    <button v-on:click="login()">Logi sisse</button>
+    <br>
+    <br>{{login2}}
+    <h1>Logi välja</h1>
+    <button v-on:click="logout()">Logi välja</button>
+    <br>
+    <br>{{logout2}}
     <h1>Kontode nimekiri</h1>
     <table class="center" border="1">
       <tr>
@@ -72,7 +82,9 @@ export default {
       'accountNr5':'',
       'balance4':'',
       'kantud':'',
-      accounts: []
+      accounts: [],
+      'username':'',
+      'password':''
     }
   },
   methods:{
@@ -121,6 +133,21 @@ export default {
                 this.accountNr5
           });
     },
+    'login':function (){
+      this.$http.post('http://localhost:8080/banksql/login',{
+        username: this.username,
+        password: this.password,})
+          .then((response) => {
+            localStorage.setItem('user-token', response.data)
+            this.$http.defaults.headers.common['Authorization'] = "Bearer " + response.data
+            this.login2 = "Sisse logitud"
+          });
+    },
+    'logout': function () {
+      localStorage.removeItem('user-token')
+      location.reload()
+      this.logout2 = "Välja logitud"
+    }
   },
   mounted() {
     this.$http.get("http://localhost:8080/banksql/8")
